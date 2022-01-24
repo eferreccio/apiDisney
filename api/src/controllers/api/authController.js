@@ -2,9 +2,9 @@ const path = require('path');
 const db = require('../../database/models');
 const sequelize = db.sequelize;
 const { Op } = require("sequelize");
+const bcryptjs = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const config = require('../../secret/config')
-const verifyToken = require('../../middlewares/verifyToken');
+const config = require('../../secret/config');
 const sgMail = require('@sendgrid/mail');
 
 
@@ -15,7 +15,7 @@ const authController = {
         db.User.create({
             name: name,
             email: email,
-            password: password
+            password: bcryptjs.hashSync(password, 10),
         })
 
         const token = jwt.sign({id: db.User.id}, config.secret, {
@@ -24,35 +24,35 @@ const authController = {
 
     res.json( {auth: true, token} )
 
-    // ***** SENDING EMAIL *****
+    // ***** SENDING EMAIL ***** 
 
     const sgMail = require('@sendgrid/mail');
 
-const API_KEY = 'secreta';
+    const API_KEY = 'SECRETO';
 
-sgMail.setApiKey(API_KEY);
+    sgMail.setApiKey(API_KEY);
 
-const msg = {
-    to: "agusdartayeta@hotmail.com",
-    from: {
-        name: "apiDisney",
-        email:"estebanferreccio@gmail.com"
-    },
-    subject: "Welcome to apiDisney",
-    text: "Thanks for signing up!",
-    html: "<div><h2>Thanks for signing up!</h2><p>You can find your favorite movie and character of Disney.Thank you!</p></div>"
+    const msg = {
+        to: req.body.email,
+        from: {
+            name: "apiDisney",
+            email:"estebanferreccio@gmail.com"
+        },
+        subject: "Welcome to apiDisney",
+        text: "Thanks for signing up!",
+        html: "<div><h2>Hi "+req.body.name+"!! Thanks for signing up!</h2><p>You can find your favorite movie and character of Disney.Thank you!</p></div>"
 
-};
+    };
 
-sgMail.send(msg)
-    .then(() => {
-        console.log('Email sent')
-    })
-    .catch((error) => {
-        console.error(error)
-    })
+    sgMail.send(msg)
+        .then(() => {
+            console.log('Email sent')
+        })
+        .catch((error) => {
+            console.error(error)
+        })
 
-    // ***** END SEND EMAIL ******
+    // ***** END SEND EMAIL *****
 
 
     },
@@ -68,10 +68,11 @@ sgMail.send(msg)
                 }
                 
                 let userToLogin = findByField('email', req.body.email);
+                let isOkThePassword = bcryptjs.compareSync(req.body.password, userToLogin.password)
                 
                 
-                if (userToLogin) {
-                    //let isOkThePassword = bcryptjs.compareSync(req.body.password, userToLogin.password)
+                if (userToLogin && isOkThePassword) {
+                    
                     const token = jwt.sign({id: userToLogin.id }, config.secret, {
                         expiresIn: 60 * 60 * 24
                     });
@@ -97,21 +98,8 @@ sgMail.send(msg)
 
         const decoded = jwt.verify(token, config.secret);
             
-        /*const user = await db.User.findById(decoded.id, { password: 0});
-
-            if (!user) {
-                return res.status(404).send('No user found');
-            } else {
-                res.json(user)
-            }*/
-
-            console.log(decoded);
-            res.json('Acceso Permitido');
-
-
-
-
-
+        console.log(decoded);
+        res.json('Acceso Permitido');
 
         } 
 

@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const charactersController = require('../../controllers/api/charactersController');
+const verifyToken = require('../../middlewares/verifyToken');
 
 //Middleware
 
@@ -9,9 +10,9 @@ const uploadFile = require('../../middlewares/multerMiddleware');
 
 //Rutas
 //Listado de todos los personajes
-router.get('/', charactersController.list);
+router.get('/', verifyToken ,charactersController.list);
 //Detalle del personaje
-router.get('/:id', charactersController.detail);
+router.get('/:id', verifyToken ,charactersController.detail);
 //Agregar un personaje
 router.post('/create', uploadFile.single('avatar'), charactersController.create);
 //Modificar un personaje
