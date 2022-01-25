@@ -1,9 +1,9 @@
 const path = require('path');
 const db = require('../../database/models');
 const sequelize = db.sequelize;
-const { Op } = require("sequelize");
+//const { Op } = require("sequelize");
+const Op = db.Sequelize.Op;
 const moment = require('moment');
-
 
 const charactersController = {
     list: (req, res) => {
@@ -137,20 +137,21 @@ const charactersController = {
         .catch(error => res.send(error))
     }, 
     search: (req, res) => {
+    
         db.Character
             .findAll({
                 where: {
                     // busca ya sea por el campo 'name' como por 'age'
                     [Op.or]: [
-                      {name:        { [Op.like]: '%' + req.query.keyword + '%' }},
-                      {age:         { [Op.like]: '%' + req.query.keyword + '%' }}
+                      {name: { [Op.like]: '%' + req.query.name + '%' }},
+                      {age:  { [Op.like]: '%' + req.query.age + '%' }}
                     ]
                 }
             })
             .then(founded => {
-                let response;
-                if(founded){
-                    response ={
+                let resp;
+                if(founded != ""){
+                    resp ={
                         meta: {
                             status: 200,
                             url: 'characters/search'
@@ -158,7 +159,7 @@ const charactersController = {
                         data:founded
                     }
                 }else{
-                    response ={
+                    resp ={
                         meta: {
                             status: 204,
                             url: 'characters/search'
@@ -166,11 +167,16 @@ const charactersController = {
                         data:founded
                     }
                 }
-                res.json(response);
+                res.json(resp);
             })    
             .catch(error => res.send(error))
 
-    },    
+
+
+        
+    }    
 }
 
+
 module.exports = charactersController;
+

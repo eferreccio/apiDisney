@@ -32,12 +32,8 @@ const charactersRouter = require('./routes/api/characters')
 //Aquí llamo a la ruta de las movies
 const moviesRouter = require('./routes/api/movies')
 
-//Aquí llamo a la ruta de los usuarios
-//const usersRouter = require('./routes/api/users')
-
 //Aquí llamo a la ruta auth
 const authRouter = require('./routes/api/auth')
-
 
 app.use(express.static(path.resolve(__dirname, '../public')));
 
@@ -45,9 +41,7 @@ app.use(express.static(path.resolve(__dirname, '../public')));
 //Aquí creo la colección de mis recursos (APIs)
 app.use('/characters',charactersRouter);
 app.use('/movies',moviesRouter);
-//app.use('/users',usersRouter);
 app.use('/auth',authRouter);
 
-
 //Activando el servidor desde express
-app.listen('3031', () => console.log('Servidor corriendo en el puerto 3031'));
+app.listen('3031', () => console.log('Server running in port 3031'));

@@ -154,8 +154,8 @@ const moviesController = {
             // busca ya sea por el campo 'name' como por 'age'
                 [Op.or]: [
 
-                    {title:        { [Op.like]: '%' + req.query.keyword + '%' }},
-                    {genre_id:         { [Op.like]: '%' + req.query.keyword + '%' }}
+                    {title:        { [Op.like]: '%' + req.query.title + '%' }},
+                    {genre_id:     { [Op.like]: '%' + req.query.genre + '%' }}
                 ]
             },
             order: [

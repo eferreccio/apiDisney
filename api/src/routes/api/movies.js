@@ -1,10 +1,15 @@
 const express = require('express');
 const router = express.Router();
 const moviesController = require('../../controllers/api/moviesController');
+
+//Middlewares
+
 const verifyToken = require('../../middlewares/verifyToken');
 
 //Rutas
 
+//Filtrar películas por rating. Puede colocar desde 1 hasta 10
+router.get('/search', verifyToken ,moviesController.search);
 //Listado de películas
 router.get('/', verifyToken ,moviesController.list);
 //Detalle de una película
@@ -15,7 +20,6 @@ router.post('/create', moviesController.create);
 router.put('/update/:id', moviesController.update);
 //Eliminar una película
 router.delete('/delete/:id', moviesController.destroy);
-//Filtrar películas por rating. Puede colocar desde 1 hasta 10
-router.get('/search', moviesController.search);
+
 
 module.exports = router;

@@ -17,44 +17,43 @@ const authController = {
             email: email,
             password: bcryptjs.hashSync(password, 10),
         })
+        .then( () => {
+            const token = jwt.sign({id: db.User.id}, config.secret, {
+                expiresIn: 60 * 60 * 24
+            })
 
-        const token = jwt.sign({id: db.User.id}, config.secret, {
-            expiresIn: 60 * 60 * 24
+            res.json( {auth: true, token} )
+
+            // ***** SENDING EMAIL ***** 
+
+            const sgMail = require('@sendgrid/mail');
+
+            const API_KEY = 'secreto';
+
+            sgMail.setApiKey(API_KEY);
+
+            const msg = {
+                to: req.body.email,
+                from: {
+                    name: "apiDisney",
+                    email:"estebanferreccio@gmail.com"
+                },
+                subject: "Welcome to apiDisney",
+                text: "Thanks for signing up!",
+                html: "<div><h2>Hi "+req.body.name+"!! Thanks for signing up!</h2><p>You can find your favorite movie and character of Disney.Thank you!</p></div>"
+
+            };
+
+            sgMail.send(msg)
+                .then(() => {
+                    console.log('Email sent')
+                })
+                .catch((error) => {
+                    console.error(error)
+                })
+
+            // ***** END SEND EMAIL *****
         })
-
-    res.json( {auth: true, token} )
-
-    // ***** SENDING EMAIL ***** 
-
-    const sgMail = require('@sendgrid/mail');
-
-    const API_KEY = 'SECRETO';
-
-    sgMail.setApiKey(API_KEY);
-
-    const msg = {
-        to: req.body.email,
-        from: {
-            name: "apiDisney",
-            email:"estebanferreccio@gmail.com"
-        },
-        subject: "Welcome to apiDisney",
-        text: "Thanks for signing up!",
-        html: "<div><h2>Hi "+req.body.name+"!! Thanks for signing up!</h2><p>You can find your favorite movie and character of Disney.Thank you!</p></div>"
-
-    };
-
-    sgMail.send(msg)
-        .then(() => {
-            console.log('Email sent')
-        })
-        .catch((error) => {
-            console.error(error)
-        })
-
-    // ***** END SEND EMAIL *****
-
-
     },
     login: (req, res) => {
         
