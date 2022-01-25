@@ -6,17 +6,20 @@ const moment = require('moment');
 
 const moviesController = {
     'list': (req, res) => {
-        db.Movie.findAll({
-            include: ['genre']
-        })
+        db.Movie.findAll()
         .then(movies => {
+
+            let listMovies = [];
+            movies.map((movie)=> {
+                listMovies.push({image: movie.image , title: movie.title , created_date: movie.created_date})
+            })
             let respuesta = {
                 meta: {
                     status : 200,
                     total: movies.length,
                     url: '/movies'
                 },
-                data: movies
+                data: listMovies
             }
                 res.json(respuesta);
             })

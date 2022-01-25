@@ -8,17 +8,21 @@ const moment = require('moment');
 const charactersController = {
     list: (req, res) => {
         db.Character.findAll()
-        .then(characters => {
-            let response = {
-                meta: {
-                    status : 200,
-                    total: characters.length,
-                    url: '/characters'
-                },
-                data: characters
+       .then(characters => {
+           let listCharacters = [];
+           characters.map((character)=> {
+               listCharacters.push({image: character.image , name: character.name})
+           })
+           let response = {
+            meta: {
+                status : 200,
+                total: characters.length,
+                url: '/characters'
+            },
+            data: listCharacters  
             }
-                res.json(response);
-            })
+            res.json(response);
+        })
     },
     detail: (req, res) => {
         db.Character.findByPk(req.params.id)
