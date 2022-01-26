@@ -15,11 +15,11 @@ router.get('/', verifyToken ,moviesController.list);
 //Detalle de una película
 router.get('/:id', verifyToken ,moviesController.detail);
 //Agregar una película
-router.post('/create', moviesController.create);
+router.post('/create', verifyToken , moviesController.create);
 //Modificar una película
-router.put('/update/:id', moviesController.update);
+router.put('/update/:id', verifyToken , moviesController.update);
 //Eliminar una película
-router.delete('/delete/:id', moviesController.destroy);
+router.delete('/delete/:id', verifyToken , moviesController.destroy);
 
 
 module.exports = router;

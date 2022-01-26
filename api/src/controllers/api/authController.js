@@ -82,27 +82,7 @@ const authController = {
                         return res.json('Las credenciales son inválidas')
                     }                
             })      
-    },
-    me: async (req, res) => {
-
-        const token = req.headers['x-access-token'];
-        if (!token) {
-            return res.status(401).json({
-                auth:false,
-                msg: 'No token provided'
-            })
-
-        } else {
-
-        const decoded = jwt.verify(token, config.secret);
-            
-        console.log(decoded);
-        res.json('Acceso Permitido');
-
-        } 
-
     }
-
 }
 
 module.exports = authController;

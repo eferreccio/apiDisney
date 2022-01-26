@@ -36,6 +36,8 @@ const moviesRouter = require('./routes/api/movies')
 //Aquí llamo a la ruta auth
 const authRouter = require('./routes/api/auth')
 
+//Uso de recursos estáticos
+
 app.use(express.static(path.resolve(__dirname, '../public')));
 
 
