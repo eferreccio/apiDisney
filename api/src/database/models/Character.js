@@ -44,7 +44,7 @@ module.exports = (sequelize, dataTypes) => {
         Character.belongsToMany(models.Movie, { // models.Movie -> Movies es el valor de alias en Movie.js
             as: "Movie",
             through: 'characters_has_movies',
-            foreignKey: 'character_id',
+            foreignKey: 'characters_id',
             otherKey: 'movies_id',
             timestamps: false,
             onDelete: 'cascade'

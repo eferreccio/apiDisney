@@ -6,6 +6,7 @@ var corsOptions = {
   origin: "*"
 };
 
+
 app.use(cors(corsOptions));
 let allowCrossDomain = function(req, res, next) {
     res.header('Access-Control-Allow-Origin', "*");

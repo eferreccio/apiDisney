@@ -25,8 +25,9 @@ const charactersController = {
         })
     },
     detail: (req, res) => {
-        db.Character.findByPk(req.params.id)
-            .then(character => {
+        db.Character.findByPk(req.params.id, {include: {association: "Movie"} })
+        
+            .then(character=>{
                 let response = {
                     meta: {
                         status: 200,
@@ -35,7 +36,7 @@ const charactersController = {
                     data: character
                 }
                 res.json(response);
-            });
+            })      
     },
     create: (req,res) => {
         db.Character

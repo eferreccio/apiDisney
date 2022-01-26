@@ -40,8 +40,7 @@ const authController = {
                 },
                 subject: "Welcome to apiDisney",
                 text: "Thanks for signing up!",
-                html: "<div><h2>Hi "+req.body.name+"!! Thanks for signing up!</h2><p>You can find your favorite movie and character of Disney.Thank you!</p></div>"
-
+                html: "<div><h2>Hi "+req.body.name+"!! Thanks for signing up!</h2><p>You can find your favorite movie and character of Disney.</p><p>Enjoy it!!!</p></div>" 
             };
 
             sgMail.send(msg)

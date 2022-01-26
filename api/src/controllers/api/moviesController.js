@@ -136,7 +136,7 @@ const moviesController = {
     'detail': (req, res) => {
         db.Movie.findByPk(req.params.id,
             {
-                include : ['genre']
+                include : ['genre', 'Character']
             })
             .then(movie => {
                 let respuesta = {
@@ -154,7 +154,7 @@ const moviesController = {
         db.Movie.findAll({
             include: ['genre'],
             where: {
-            // busca ya sea por el campo 'name' como por 'age'
+            // busca ya sea por el campo 'title' como por 'genre'
                 [Op.or]: [
 
                     {title:        { [Op.like]: '%' + req.query.title + '%' }},
